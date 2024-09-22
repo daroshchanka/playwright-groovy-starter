@@ -1,0 +1,50 @@
+reporting:
+  attach-screenshots: 'on' # on, off, only-on-failure
+  screenshot-mode: 'viewport' # full, viewport
+
+base:
+  launch-options: &base-launch-options
+    slowMo: 100
+    headless: ${headless}
+  new-context-options: &new-context-options
+    viewportSize:
+      width: 1920
+      height: 1080
+    extraHTTPHeaders: #workaround for HeadlessChrome not to be passing automatically
+      user-agent: 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/129.0.0.0 Safari/537.36'
+
+browser:
+  - name: 'chrome'
+    type: 'chromium'
+    launch-options: &chromium-launch-options
+      <<: *base-launch-options
+      channel: 'chrome'
+      args:
+        - '--disable-dev-shm-usage'
+        - '--disable-blink-features=AutomationControlled'
+      ignoreDefaultArgs:
+        - '--disable-component-extensions-with-background-pages'
+    new-context-options:
+      <<: *new-context-options
+
+  - name: 'webkit'
+    type: 'webkit'
+    launch-options:
+      <<: *base-launch-options
+    new-context-options:
+      <<: *new-context-options
+
+  - name: 'firefox'
+    type: 'firefox'
+    launch-options:
+      <<: *base-launch-options
+    new-context-options:
+      <<: *new-context-options
+
+  - name: 'msedge'
+    type: 'chromium'
+    launch-options:
+      <<: *chromium-launch-options
+      channel: 'msedge'
+    new-context-options:
+      <<: *new-context-options

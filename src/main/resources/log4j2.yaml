@@ -1,0 +1,38 @@
+Configuration:
+  name: Default
+
+  Properties:
+    Property:
+      - name: uuid
+        value: '0000-0000-0000000000-0000'
+      - name: logsDir
+        value: './target/test-logs'
+  Appenders:
+    Console:
+      name: LogToConsole
+      target: SYSTEM_OUT
+      PatternLayout:
+        pattern: '%d [%-10tn] %-5p - %m %n'
+    Routing:
+      - name: Test
+        Routes:
+          pattern: '$${ctx:uuid}'
+          Route:
+            RollingFile:
+              immediateFlush: true
+              append: false
+              name: 'RollingFile-${ctx:uuid}'
+              fileName: '${logsDir}/test-${ctx:uuid}.log'
+              filePattern: '${logsDir}/%d{yyyy-MM-dd}/archived_%d{HH-mm}-${ctx:uuid}.log'
+              PatternLayout:
+                pattern: '%d %-5p - %m %n'
+              Policies:
+                - OnStartupTriggeringPolicy
+  Loggers:
+    Logger:
+      - name: github.daroshchanka.playwrightstarter
+        additivity: false
+        level: debug
+        AppenderRef:
+          - ref: LogToConsole
+          - ref: Test

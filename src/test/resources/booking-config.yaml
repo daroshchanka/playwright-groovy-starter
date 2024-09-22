@@ -1,0 +1,17 @@
+dev:
+  api:
+    baseUrl: 'TBD'
+  web:
+    baseUrl: 'https://www.booking.com'
+
+qa:
+  api:
+    baseUrl: 'TBD'
+  web:
+    baseUrl: 'TBD'
+
+stage:
+  api:
+    baseUrl: 'TBD'
+  web:
+    baseUrl: 'TBD'
