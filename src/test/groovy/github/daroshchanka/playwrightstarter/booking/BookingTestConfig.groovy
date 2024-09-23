@@ -10,9 +10,8 @@ class BookingTestConfig {
   private Map envConfigs
 
   private BookingTestConfig() {
-    def env = System.getProperty('ENV') == null ? 'dev' : System.getProperty('ENV')
-    def globalConfigs = new Yaml()
-        .load(new File('target/test-classes/booking-config.yaml').text)
+    def env = System.getProperty('ENV') ?: 'dev'
+    def globalConfigs = new Yaml().load(new File('target/test-classes/booking-config.yaml').text)
     envConfigs = (globalConfigs[env] ?: globalConfigs['dev']) as Map
     log.info("[BookingTestConfig] Load booking-config.yaml: for [$env] - $envConfigs")
   }

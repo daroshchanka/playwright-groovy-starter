@@ -10,9 +10,8 @@ class HttpbinTestConfig {
   private Map envConfigs
 
   private HttpbinTestConfig() {
-    def env = System.getProperty('ENV') == '' ? 'dev' : System.getProperty('ENV')
-    def globalConfigs = new Yaml()
-        .load(new File('target/test-classes/httpbin-config.yaml').text)
+    def env = System.getProperty('ENV') ?: 'dev'
+    def globalConfigs = new Yaml().load(new File('target/test-classes/httpbin-config.yaml').text)
     envConfigs = (globalConfigs[env] ?: globalConfigs['dev']) as Map
     log.info("[HttpbinTestConfig] Load httpbin-config.yaml: for [$env] - $envConfigs")
   }
