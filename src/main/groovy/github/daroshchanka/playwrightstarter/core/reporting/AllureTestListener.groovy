@@ -1,6 +1,7 @@
 package github.daroshchanka.playwrightstarter.core.reporting
 
 import com.microsoft.playwright.Page
+import com.microsoft.playwright.options.ScreenshotType
 import github.daroshchanka.playwrightstarter.core.PlaywrightConfig
 import groovy.util.logging.Log4j2
 import io.qameta.allure.Allure
@@ -60,7 +61,10 @@ class AllureTestListener implements TestLifecycleListener {
     Page page = PAGE.get()
     if (page) {
       try {
-        ByteArrayInputStream stream = new ByteArrayInputStream(page.screenshot())
+        def screenshotMode = PlaywrightConfig.getReportingConfigs()?['screenshot-mode'] ?: 'viewport'
+        ByteArrayInputStream stream = new ByteArrayInputStream(page.screenshot(
+            new Page.ScreenshotOptions(type: ScreenshotType.PNG, fullPage: screenshotMode == 'full'))
+        )
         Allure.addAttachment('screenshot.png', stream)
       } catch (Exception e) {
         log.warn('attachScreenshot error', e)
