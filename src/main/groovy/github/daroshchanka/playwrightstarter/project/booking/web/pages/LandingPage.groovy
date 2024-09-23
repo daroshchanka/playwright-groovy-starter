@@ -3,6 +3,7 @@ package github.daroshchanka.playwrightstarter.project.booking.web.pages
 import com.microsoft.playwright.Page
 import github.daroshchanka.playwrightstarter.core.web.BaseWebPage
 import github.daroshchanka.playwrightstarter.core.web.UiElement
+import github.daroshchanka.playwrightstarter.project.booking.web.pages.widgets.PopupHandleWidget
 import github.daroshchanka.playwrightstarter.project.booking.web.pages.widgets.SearchWidget
 import github.daroshchanka.playwrightstarter.project.booking.web.pages.widgets.TopHeaderWidget
 import groovy.transform.InheritConstructors
@@ -16,21 +17,23 @@ class LandingPage extends BaseWebPage {
 
   private UiElement heroBanner = byXpath("//div[contains(@class, 'hero-banner')]")
   private UiElement promoSection = byXpath("//div[contains(@class, 'promo-section')]")
-  private UiElement registerPopup = byXpath("//div[@role='dialog']")
-  private UiElement registerPopupCloseIcon = byXpath("$registerPopup//button")
+
   private TopHeaderWidget topHeader
   private SearchWidget search
+  @Delegate
+  private PopupHandleWidget popupHandler
 
   LandingPage(Page page) {
     super(page)
     topHeader = new TopHeaderWidget(page)
     search = new SearchWidget(page)
+    popupHandler = new PopupHandleWidget(page)
   }
 
   LandingPage navigate() {
     log.info('Navigate to Landing page')
     page.navigate('/')
-    handleRegisterPopup()
+    handlePopup()
     waitForNetworkIdle()
     this
   }
@@ -43,18 +46,8 @@ class LandingPage extends BaseWebPage {
 
   SearchResultsPage doSearch(Map query) {
     search.doSearch(query)
+    handlePopup()
     new SearchResultsPage(page)
   }
 
-  private handleRegisterPopup() {
-    try {
-      registerPopup.waitForAttached(pofPage, 3);
-      if (registerPopup.isVisible(pofPage)) {
-        log.debug('Closing register/signon popup')
-        registerPopupCloseIcon.click(pofPage)
-        registerPopup.waitForDetached(pofPage)
-      }
-    } catch (ignored) {
-    }
-  }
 }

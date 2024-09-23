@@ -19,6 +19,6 @@ class BookingDetectLocaleTest extends BaseBookingWebTest {
   void 'should redirect to the target location index page'() {
     BaseWebPage baseWebPage = new BaseWebPage(page)
     baseWebPage.goTo('/').waitForNetworkIdle()
-    assert baseWebPage.page.url().contains('/index.fr.html')
+    assert baseWebPage.getUrl().contains('/index.fr.html')
   }
 }

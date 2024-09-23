@@ -14,7 +14,7 @@ Configuration:
       PatternLayout:
         pattern: '%d [%-10tn] %-5p - %m %n'
     Routing:
-      - name: Test
+      - name: LogToFilePerTest
         Routes:
           pattern: '$${ctx:uuid}'
           Route:
@@ -35,4 +35,4 @@ Configuration:
         level: debug
         AppenderRef:
           - ref: LogToConsole
-          - ref: Test
+          - ref: LogToFilePerTest

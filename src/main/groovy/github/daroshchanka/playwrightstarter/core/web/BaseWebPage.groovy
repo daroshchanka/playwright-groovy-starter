@@ -8,7 +8,7 @@ import groovy.util.logging.Log4j2
 @Log4j2
 class BaseWebPage {
 
-  final Page page
+  protected Page page
 
   BaseWebPage(Page page) {
     this.page = page
@@ -22,6 +22,12 @@ class BaseWebPage {
   @Memoized
   protected PageOrFrame getPofPage() {
     new PageOrFrame(page)
+  }
+
+  String getUrl() {
+    String result = page.url()
+    log.info("Check curent url - $result")
+    result
   }
 
   void waitForNetworkIdle(int timeoutSec = 10) {

@@ -3,6 +3,7 @@ package github.daroshchanka.playwrightstarter.core.reporting
 import com.microsoft.playwright.Page
 import com.microsoft.playwright.options.ScreenshotType
 import github.daroshchanka.playwrightstarter.core.PlaywrightConfig
+import github.daroshchanka.playwrightstarter.core.web.PlaywrightSharedContext
 import groovy.util.logging.Log4j2
 import io.qameta.allure.Allure
 import io.qameta.allure.listener.TestLifecycleListener
@@ -15,7 +16,6 @@ class AllureTestListener implements TestLifecycleListener {
   protected static final String LOG_PATH = 'target/test-logs/'
   private static final ThreadLocal<String> TEST_UUID = new ThreadLocal<>()
   private static final TEST_HEADER_LOG = '-'.repeat(120)
-  private static ThreadLocal<Page> PAGE = new ThreadLocal<>()
 
   @Override
   void afterTestStart(TestResult result) {
@@ -58,7 +58,7 @@ class AllureTestListener implements TestLifecycleListener {
   }
 
   private static void attachScreenshot() {
-    Page page = PAGE.get()
+    Page page = PlaywrightSharedContext.getPage()
     if (page) {
       try {
         def screenshotMode = PlaywrightConfig.getReportingConfigs()?['screenshot-mode'] ?: 'viewport'
@@ -72,7 +72,4 @@ class AllureTestListener implements TestLifecycleListener {
     }
   }
 
-  static setPage(Page page) {
-    PAGE.set(page)
-  }
 }

@@ -1,11 +1,11 @@
 package github.daroshchanka.playwrightstarter.core.web
 
 import com.microsoft.playwright.Browser
+import com.microsoft.playwright.Browser.NewContextOptions
 import com.microsoft.playwright.BrowserContext
 import com.microsoft.playwright.BrowserType
 import com.microsoft.playwright.Page
 import github.daroshchanka.playwrightstarter.core.PlaywrightConfig
-import github.daroshchanka.playwrightstarter.core.reporting.AllureTestListener
 import groovy.util.logging.Log4j2
 import org.testng.annotations.AfterTest
 import org.testng.annotations.BeforeClass
@@ -29,7 +29,9 @@ class BaseWebTest {
     if (null != browserContext) {
       browserContext.close()
     }
-    browserContext = browser.newContext(withNewContextOptions())
+    def options = withNewContextOptions()
+    log.info("Launch BrowserContext with options ${newContextOptionsToString(options)}")
+    browserContext = browser.newContext(options)
   }
 
   @AfterTest
@@ -57,21 +59,40 @@ class BaseWebTest {
     true
   }
 
+  /**
+   * Possible to override on the higher level
+   * */
   protected withBrowserName() {
     PlaywrightConfig.browserName
   }
 
+  /**
+   * Possible to override on the higher level
+   * */
   protected BrowserType.LaunchOptions withLaunchOptions() {
     PlaywrightConfig.launchOptions
   }
 
-  protected Browser.NewContextOptions withNewContextOptions() {
+  /**
+   * Possible to override on the higher level
+   * */
+  protected NewContextOptions withNewContextOptions() {
     PlaywrightConfig.newContextOptions
   }
 
   protected void newPage() {
     page = browserContext.newPage()
-    AllureTestListener.setPage(page)
+    PlaywrightSharedContext.setPage(page)
   }
 
+  private static String newContextOptionsToString(NewContextOptions options) {
+    try {
+      options.getProperties().tap {
+        remove('class')
+        put('viewportSize', options?.viewportSize?.get()?.getProperties()?.tap { remove('class') })
+      }.findAll { it.value != null }.toString()
+    } catch (Exception ignored) {
+      options.getProperties().findAll { it.value != null }.toString()
+    }
+  }
 }
