@@ -25,7 +25,7 @@ class Response {
   }
 
   @Memoized
-  Serializable getStatus() {
+  int getStatus() {
     response.status()
   }
 
