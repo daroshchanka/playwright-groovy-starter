@@ -13,7 +13,7 @@ import groovy.util.logging.Log4j2
 class SearchResultsPage extends BaseWebPage {
 
   private UiElement assertiveHeader = UiElement.byXpath("//h1[@aria-live='assertive']")
-  private UiElement mapTrigger = UiElement.byTestId('map-trigger')
+  private UiElement mapTrigger = UiElement.byXpath("//div[contains(@data-testid, 'map-trigger')]")
   private UiElement searchResultItem = UiElement.byTestId('property-card')
   private TopHeaderWidget topHeader
   private SearchWidget search
