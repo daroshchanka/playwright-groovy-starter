@@ -21,7 +21,7 @@ less-verbose in tests.
 
 - `src/main/../core`  - project-agnostic code, common for any product/project to be automated
 - `src/main/../project`  - project-specific base code, including objects and utils for the particular project (
-  pageobjects for web, services for api, utils, datagenerators, etc.)
+  page-objects for web, services for api, utils, data-generators, etc.)
 - `src/test/` - project tests, grouped by directories, components, etc. also test config definition is there (base urls,
   etc.)
 
@@ -51,7 +51,7 @@ Allure report used.
 Customization added to attach text logs + screenshot per each test.
 
 - `./mvnw allure:report` - will generate report to `target/site` (for CI)
-- `./mvnw allure:serve` will generate report to temp directory and will open it in browser (local).
+- `./mvnw allure:serve` - will generate report to temp directory and will open it in browser (local).
 
 ![](.assets/web-report-example.png)
 ![](.assets/api-report-example.png)
@@ -160,3 +160,4 @@ stage:
 ### Other Implementations
 
 - [playwright-typescript-starter](https://github.com/daroshchanka/playwright-typescript-starter)
+- [playwright-python-starter](https://github.com/daroshchanka/playwright-python-starter)
